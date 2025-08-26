@@ -14,9 +14,9 @@ import { PrintJob } from './../models/PrintJob';
 export class StudentService {
   //private apiUrl = 'https://meuappapi.azurewebsites.net/api/Student';
 
-  private apiUrl = 'https://fullstack-6-40oe.onrender.com/api/Students';
-
   //private apiUrl = 'http://localhost:5000/api/Students';
+
+  private apiUrl = 'https://fullstack-6-40oe.onrender.com/api/Students';
 
   constructor(private http: HttpClient) {}
 
@@ -52,7 +52,7 @@ export class StudentService {
     return this.http.put<Student>(this.apiUrl + '/Update/' + id, student);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(this.apiUrl + '/Delete/' + id);
+  delete(id: number): Observable<any> {
+    return this.http.delete(this.apiUrl + '/Delete/' + id, { observe: 'response' });
   }
 }
