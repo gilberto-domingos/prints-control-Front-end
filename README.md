@@ -1,3 +1,5 @@
+## Front-end está sendo refatorado nesse momento...
+
 ### Front-end do projeto fullStack Senac
 
 - Projeto Angular
