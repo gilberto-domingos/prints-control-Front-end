@@ -13,11 +13,11 @@ import { PrintJob } from './../models/PrintJob';
   providedIn: 'root',
 })
 export class StudentService {
-  //  private apiUrl = 'https://meuappapi.azurewebsites.net/api/Students';
-  //  private apiUrl = 'https://prints-control.onrender.com/api/Students';
-  //  private apiUrl = 'http://localhost:5000/api/Students';
+  //private apiUrl = 'https://meuappapi.azurewebsites.net/api/Student';
 
-  private apiUrl = 'https://prints-control.onrender.com/api/Students';
+  //private apiUrl = 'http://localhost:5000/api/Students';
+
+  private apiUrl = 'https://prints-control.onrender.com/api/Student';
 
   constructor(private http: HttpClient) {}
 
@@ -25,8 +25,8 @@ export class StudentService {
     return this.http.get<Student[]>(this.apiUrl + '/All');
   }
 
-  getStudentHistory(id: number): Observable<StudentHistory> {
-    return this.http.get<StudentHistory>(this.apiUrl + '/History/' + id);
+  getHistory(): Observable<StudentHistory[]> {
+    return this.http.get<StudentHistory[]>(`${this.apiUrl}/history`);
   }
 
   getAllPurchases(): Observable<Purchase[]> {

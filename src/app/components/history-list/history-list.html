@@ -1,67 +1,91 @@
-<h1 class="mt-4" id="ctr">Histórico de movimentações</h1>
+<h1 class="mt-4" id="ctr">Histórico de Movimentações</h1>
 
-<h2 class="mt-4">Alunos</h2>
+<mat-card class="mt-4">
+  <mat-card-content>
+    <div *ngIf="isLoading" class="loading">Carregando histórico...</div>
 
-<ng-container *ngIf="students$ | async as students">
-  <table mat-table [dataSource]="students" class="mat-elevation-z1" aria-label="Tabela de alunos">
-    <ng-container matColumnDef="code">
-      <th mat-header-cell *matHeaderCellDef>Código</th>
-      <td mat-cell *matCellDef="let s">{{ s.id }}</td>
-    </ng-container>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Nome</th>
-      <td mat-cell *matCellDef="let s">{{ s.name }}</td>
-    </ng-container>
+    <table
+      *ngIf="!isLoading && histories.length > 0"
+      mat-table
+      [dataSource]="histories"
+      class="mat-elevation-z1 full-width-table"
+      aria-label="Tabela de histórico de estudantes"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let h">{{ h.name }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="balance">
-      <th mat-header-cell *matHeaderCellDef>Saldo</th>
-      <td mat-cell *matCellDef="let s">{{ s.balance }}</td>
-    </ng-container>
+      <ng-container matColumnDef="balance">
+        <th mat-header-cell *matHeaderCellDef>Saldo</th>
+        <td mat-cell *matCellDef="let h">{{ h.balance }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="purchases">
-      <th mat-header-cell *matHeaderCellDef>Compras</th>
-      <td mat-cell *matCellDef="let s">
-        <div *ngFor="let p of s.purchases">
-          {{ p.quantity }}
-        </div>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="totalPurchase">
+        <th mat-header-cell *matHeaderCellDef>Total de Compras</th>
+        <td mat-cell *matCellDef="let h">{{ h.totalPurchase }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="datePurchase">
-      <th mat-header-cell *matHeaderCellDef>Data das Compras</th>
-      <td mat-cell *matCellDef="let s">
-        <div *ngFor="let p of s.purchases">
-          {{ p.purchaseDate | date : 'short' }}
-        </div>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="totalPrints">
+        <th mat-header-cell *matHeaderCellDef>Total de Impressões</th>
+        <td mat-cell *matCellDef="let h">{{ h.totalPrints }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="printJobs">
-      <th mat-header-cell *matHeaderCellDef>Impressões</th>
-      <td mat-cell *matCellDef="let s">
-        <ng-container *ngIf="s.printJobs && s.printJobs.length > 0; else noPrints">
-          <div *ngFor="let pj of s.printJobs">
-            {{ pj.quantity }}
+      <ng-container matColumnDef="purchaseDates">
+        <th mat-header-cell *matHeaderCellDef>Datas de Compras</th>
+        <td mat-cell *matCellDef="let h">
+          <div *ngIf="h.purchaseDates?.length > 0; else noPurchase">
+            <div *ngFor="let date of h.purchaseDates">
+              {{ date | date : 'short' }}
+            </div>
           </div>
-        </ng-container>
-        <ng-template #noPrints>0</ng-template>
-      </td>
-    </ng-container>
+          <ng-template #noPurchase>—</ng-template>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="printDate">
-      <th mat-header-cell *matHeaderCellDef>Data das Impressões</th>
-      <td mat-cell *matCellDef="let s">
-        <ng-container *ngIf="s.printJobs && s.printJobs.length > 0; else noDate">
-          <div *ngFor="let pj of s.printJobs">
-            {{ pj.printDate | date : 'short' }}
+      <ng-container matColumnDef="printDates">
+        <th mat-header-cell *matHeaderCellDef>Datas de Impressões</th>
+        <td mat-cell *matCellDef="let h">
+          <div *ngIf="h.printDates?.length > 0; else noPrint">
+            <div *ngFor="let date of h.printDates">
+              {{ date | date : 'short' }}
+            </div>
           </div>
-        </ng-container>
-        <ng-template #noDate>00/00/0000 00:00</ng-template>
-      </td>
-    </ng-container>
+          <ng-template #noPrint>—</ng-template>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-</ng-container>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'name',
+          'balance',
+          'totalPurchase',
+          'totalPrints',
+          'purchaseDates',
+          'printDates'
+        ]"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let row;
+          columns: [
+            'name',
+            'balance',
+            'totalPurchase',
+            'totalPrints',
+            'purchaseDates',
+            'printDates'
+          ]
+        "
+      ></tr>
+    </table>
+
+    <div *ngIf="!isLoading && histories.length === 0" class="no-data">
+      Nenhum histórico encontrado.
+    </div>
+  </mat-card-content>
+</mat-card>
