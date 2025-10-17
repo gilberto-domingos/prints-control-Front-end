@@ -1,4 +1,5 @@
 export interface StudentHistory {
+  id: string;
   studentId: string;
   createdAt: string;
   name: string;
