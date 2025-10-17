@@ -1,0 +1,57 @@
+<mat-card>
+  <div class="form-container">
+    <h2>{{ isEditMode ? 'Editar Compra' : 'Comprar impressões' }}</h2>
+
+    <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Aluno</mat-label>
+        <select matNativeControl formControlName="studentId" name="studentId">
+          <option *ngFor="let student of students" [value]="student.id">
+            {{ student.name }}
+          </option>
+        </select>
+        <mat-error *ngIf="purchaseForm.get('studentId')?.hasError('required')"> </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Quantidade</mat-label>
+        <select matNativeControl formControlName="quantity" name="quantity">
+          <option *ngFor="let qty of quantities" [value]="qty">
+            {{ qty }}
+          </option>
+        </select>
+        <mat-error *ngIf="purchaseForm.get('quantity')?.hasError('required')"> </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data da Compra</mat-label>
+        <input
+          matInput
+          [value]="purchaseForm.get('purchaseDate')?.value | date : 'dd/MM/yyyy'"
+          readonly
+        />
+      </mat-form-field>
+
+      <div class="button-group">
+        <button
+          matButton="filled"
+          color="secondary"
+          class="adsmll-btn"
+          type="submit"
+          [disabled]="purchaseForm.invalid"
+        >
+          {{ isEditMode ? 'Salvar Alterações' : 'Comprar' }}
+        </button>
+        <button
+          matButton="filled"
+          color="secondary"
+          class="adsmll-btn"
+          type="button"
+          (click)="router.navigate(['/students'])"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</mat-card>

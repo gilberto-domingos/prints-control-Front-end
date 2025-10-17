@@ -1,0 +1,29 @@
+<mat-card>
+  <h2>{{ editMode ? 'Editar' : 'Nova' }} Impressão</h2>
+
+  <form [formGroup]="printJobForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Aluno</mat-label>
+      <select matNativeControl formControlName="studentId" name="studentId">
+        <option *ngFor="let student of students" [value]="student.id">
+          {{ student.name }}
+        </option>
+      </select>
+      <mat-error *ngIf="printJobForm.get('studentId')?.hasError('required')"> </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Quantidade de Páginas</mat-label>
+      <input matInput type="number" formControlName="quantity" />
+    </mat-form-field>
+
+    <div class="button-group">
+      <button matButton="filled" color="secondary" class="adsmll-btn" type="submit">
+        {{ editMode ? 'Atualizar' : 'Imprimir' }}
+      </button>
+      <button matButton="filled" color="secondary" class="adsmll-btn" (click)="onCancel()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</mat-card>

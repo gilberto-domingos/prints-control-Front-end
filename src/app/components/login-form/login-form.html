@@ -1,0 +1,38 @@
+<mat-card class="w-96 p-6 shadow-xl rounded-2xl">
+  <h2 class="text-xl font-semibold mb-4 text-center">Login</h2>
+
+  <!-- Spinner só aparece quando loading for true -->
+  <div class="loader-overlay" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="form.get('email')?.hasError('required')"> Email é obrigatório </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')"> Email inválido </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error *ngIf="form.get('password')?.hasError('required')">
+        Senha é obrigatória
+      </mat-error>
+    </mat-form-field>
+
+    <!--
+    É um login básico; se houver interesse de ficar com a API, posso implementar hash e JWT profissional depois.
+    <mat-checkbox formControlName="rememberMe">Lembrar-me</mat-checkbox>
+    -->
+
+    <div *ngIf="errorMessage" class="text-red-500 mt-2">
+      {{ errorMessage }}
+    </div>
+
+    <div class="button-group">
+      <button mat-raised-button color="primary" class="adsmll-btn">Entrar</button>
+    </div>
+  </form>
+</mat-card>
