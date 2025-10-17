@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Purchase } from '../models/Purchase';
 import { Student } from '../models/Student';
+import { StudentHistory } from '../models/StudentHistory';
 import { PrintJob } from './../models/PrintJob';
 
 // import { environment } from '../../environments/environment';
@@ -12,16 +13,20 @@ import { PrintJob } from './../models/PrintJob';
   providedIn: 'root',
 })
 export class StudentService {
-  //private apiUrl = 'https://meuappapi.azurewebsites.net/api/Student';
+  //  private apiUrl = 'https://meuappapi.azurewebsites.net/api/Students';
+  //  private apiUrl = 'https://prints-control.onrender.com/api/Students';
+  //  private apiUrl = 'http://localhost:5000/api/Students';
 
-  //private apiUrl = 'http://localhost:5000/api/Students';
-
-  private apiUrl = 'https://fullstack-6-40oe.onrender.com/api/Students';
+  private apiUrl = 'https://prints-control.onrender.com/api/Students';
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Student[]> {
     return this.http.get<Student[]>(this.apiUrl + '/All');
+  }
+
+  getStudentHistory(id: number): Observable<StudentHistory> {
+    return this.http.get<StudentHistory>(this.apiUrl + '/History/' + id);
   }
 
   getAllPurchases(): Observable<Purchase[]> {
