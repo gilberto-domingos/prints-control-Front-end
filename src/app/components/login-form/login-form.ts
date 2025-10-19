@@ -64,8 +64,8 @@ export class LoginForm implements OnInit {
     }
 
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['gilberto.junior5@alunos.sc.senac.br', [Validators.required, Validators.email]],
+      password: ['senha_ficticia', Validators.required],
       rememberMe: [true],
     });
   }
@@ -76,7 +76,7 @@ export class LoginForm implements OnInit {
 
     const { email, password, rememberMe } = this.form.value;
 
-    if (password === 'aluno2025gilberto') {
+    if (password === 'senha_ficticia') {
       //  if (rememberMe) {
       localStorage.setItem('auth.token', 'fake-token-123');
       localStorage.setItem('auth.user', email);

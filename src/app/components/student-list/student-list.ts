@@ -5,10 +5,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { PrintJob } from '../../models/PrintJob';
 import { Student } from '../../models/Student';
 import { StudentService } from '../../services/student';
+import { PrintJobService } from './../../services/printjob';
 
 @Component({
   selector: 'app-student-list',
@@ -29,7 +30,24 @@ export class StudentList implements OnInit {
 
   displayedColumns: string[] = ['code', 'name', 'balance', 'purchases', 'printJobs', 'actions'];
 
-  constructor(private studentService: StudentService, private router: Router) {}
+  totalPrintsMap$: Observable<Map<string, number>> = this.printJobsSubject.asObservable().pipe(
+    map((prints) => {
+      const map = new Map<string, number>();
+      prints?.forEach((job) => {
+        const current = map.get(job.studentId.toString()) ?? 0;
+        map.set(job.studentId.toString(), current + job.quantity);
+      });
+      debugger;
+      console.log('Map completo:', map);
+      return map;
+    })
+  );
+
+  constructor(
+    private studentService: StudentService,
+    private printJobService: PrintJobService,
+    private router: Router
+  ) {}
 
   loadStudents(): void {
     this.studentService.getAll().subscribe({
@@ -39,13 +57,18 @@ export class StudentList implements OnInit {
   }
 
   loadPrints(): void {
-    this.studentService.getPrintDocuments().subscribe({
-      next: (prints) => this.printJobsSubject.next(prints),
+    // console.log('PPPPPloadPrints chamado');
+    this.printJobService.getPrintDocuments().subscribe({
+      next: (prints) => {
+        console.log('Prints recebidos:', prints);
+        this.printJobsSubject.next(prints);
+      },
       error: (err) => console.error('Erro ao carregar impressões:', err),
     });
   }
 
   getTotalPrints(printJobs: PrintJob[] | undefined): number {
+    console.log('PrintJobs recebido:', printJobs);
     if (!printJobs || printJobs.length === 0) return 0;
     return printJobs.reduce((total, job) => total + job.quantity, 0);
   }

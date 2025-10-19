@@ -18,6 +18,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Purchase } from '../../models/Purchase';
 import { Student } from '../../models/Student';
 import { StudentService } from '../../services/student';
+import { PurchaseService } from './../../services/purchase';
 
 @Component({
   selector: 'app-purchase-form',
@@ -53,6 +54,7 @@ export class PurchaseForm implements OnInit {
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
+    private PurchaseService: PurchaseService,
     private route: ActivatedRoute,
     public router: Router
   ) {}
@@ -84,7 +86,7 @@ export class PurchaseForm implements OnInit {
 
     this.isSubmitting = true;
 
-    this.studentService.createPurchase(purchase).subscribe({
+    this.PurchaseService.createPurchase(purchase).subscribe({
       next: () => {
         this.isSubmitting = false;
         alert('Compra realizada com sucesso!');

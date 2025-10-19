@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PrintJob } from '../../models/PrintJob';
 import { Student } from '../../models/Student';
+import { PrintJobService } from './../../services/printjob';
 import { StudentService } from './../../services/student';
 
 @Component({
@@ -36,6 +37,7 @@ export class PrintJobForm implements OnInit {
   constructor(
     private fb: FormBuilder,
     private studentService: StudentService,
+    private PrintJobService: PrintJobService,
     private router: Router,
     private activateRoute: ActivatedRoute
   ) {
@@ -63,7 +65,7 @@ export class PrintJobForm implements OnInit {
         return;
       }
 
-      this.studentService.printDocuments(printJob).subscribe({
+      this.PrintJobService.printDocuments(printJob).subscribe({
         next: () => {
           alert('Impressão realizada com sucesso !');
           this.router.navigate(['/students']);
